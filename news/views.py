@@ -112,7 +112,6 @@ def index(request):
                 if len(news) != 0:
                     save_news_to_database(message, news)
 
-    context = {"predict": pred, "news": news}
+    context = {"predict": pred, "news": news, "search_term": message}
     print("PREDICTION=", context)
     return render(request, "news/index.html", context)
-
