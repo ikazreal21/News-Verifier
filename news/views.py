@@ -100,7 +100,6 @@ def index(request):
             news = existing
             print("if")
         else:
-
             pred = fake_news_det(message)
             print("FIRST_PRED=", pred)
             if pred[0] == "FAKE":
@@ -116,3 +115,4 @@ def index(request):
     context = {"predict": pred, "news": news}
     print("PREDICTION=", context)
     return render(request, "news/index.html", context)
+
