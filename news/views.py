@@ -123,4 +123,3 @@ def index(request):
             input("Enter")
     context = {'predict': pred, 'news': news}
     return render(request, 'news/index.html', context)
-
