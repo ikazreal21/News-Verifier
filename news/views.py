@@ -15,14 +15,24 @@ from sklearn.model_selection import train_test_split
 from newscatcherapi import NewsCatcherApiClient
 from django.db.models import Q
 
-newscatcherapi = NewsCatcherApiClient(x_api_key='g8EYZLLr3R6q7sBhuK6LWPDlPVV3T86WsZAo0v2NYt8')
+newscatcherapi = NewsCatcherApiClient(
+    x_api_key="g8EYZLLr3R6q7sBhuK6LWPDlPVV3T86WsZAo0v2NYt8"
+)
 
-tfvect = TfidfVectorizer(stop_words='english', max_df=0.7)
-loaded_model = pickle.load(open('news\model.pkl', 'rb'))
-dataframe = pd.read_csv('news\\news.csv')
-x = dataframe['text']
-y = dataframe['label']
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+tfvect = TfidfVectorizer(stop_words="english", max_df=0.7)
+
+# linux
+loaded_model = pickle.load(open("news/model.pkl", "rb"))
+dataframe = pd.read_csv("news/news.csv")
+# windows
+# loaded_model = pickle.load(open("news\model.pkl", "rb"))
+# dataframe = pd.read_csv('news\\news.csv')
+x = dataframe["text"]
+y = dataframe["label"]
+x_train, x_test, y_train, y_test = train_test_split(
+    x, y, test_size=0.2, random_state=0
+)
+
 
 def fake_news_det(news):
     tfid_x_train = tfvect.fit_transform(x_train)
@@ -35,19 +45,19 @@ def fake_news_det(news):
 
 def get_news_api(message):
 
-    query = f'{message}'
+    query = f"{message}"
     news_article = newscatcherapi.get_search(
         q=query,
-        lang='en',
-        countries='PH',
-        sources='cnnphilippines.com,philstar.com,manilatimes.net,mb.com.ph,\
-        tv5.com.ph,inquirer.net,dzrh.com.ph,abs-cbn.com,gmanetwork.com',
-        page_size=50
-        )
-    
+        lang="en",
+        countries="PH",
+        sources="cnnphilippines.com,philstar.com,manilatimes.net,mb.com.ph,\
+        tv5.com.ph,inquirer.net,dzrh.com.ph,abs-cbn.com,gmanetwork.com",
+        page_size=50,
+    )
+
     article_arr = []
-    if news_article['page_size'] != 0:
-        for data in news_article['articles']:
+    if news_article["page_size"] != 0:
+        for data in news_article["articles"]:
             articles = {}
             articles["title"] = data["title"]
             articles["content"] = data["summary"]
@@ -73,32 +83,36 @@ def save_news_to_database(phrase, articles):
         news.datestr = article["datestr"]
         news.save()
 
+
 def index(request):
-    pred = ''
-    news = ''
-    if request.method == 'POST':
-        message = request.POST.get('message')
+    pred = "Error"
+    news = ""
+    if request.method == "POST":
+        message = request.POST.get("message")
         print("message1", message)
         existing = News.objects.filter(
-            Q(title__icontains=message) | 
-            Q(content__icontains=message) | 
-            Q(excerpt__icontains=message))
+            Q(title__icontains=message)
+            | Q(content__icontains=message)
+            | Q(excerpt__icontains=message)
+        )
         print(existing.count())
         if existing.count() != 0:
             news = existing
             print("if")
         else:
-            news = get_news_api(message)
-            if len(news) != 0:
-                save_news_to_database(message, news)
-            else: 
-                pred = fake_news_det(message)
-                if pred[0] == 'FAKE':
-                    pred = 'Unverified'
-                else:
-                    pred = 'Verified'
-            print(pred)
-            print(news)
-            input("Enter")
-    context = {'predict': pred, 'news': news}
-    return render(request, 'news/index.html', context)
+            pred = fake_news_det(message)
+            print("FIRST_PRED=", pred)
+            if pred[0] == "FAKE":
+                pred = "Unverified"
+            else:
+                pred = "Verified"
+
+            if pred == "Verified":
+                news = get_news_api(message)
+                if len(news) != 0:
+                    save_news_to_database(message, news)
+
+    context = {"predict": pred, "news": news}
+    print("PREDICTION=", context)
+    return render(request, "news/index.html", context)
+
