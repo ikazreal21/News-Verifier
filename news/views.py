@@ -13,6 +13,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 from newscatcherapi import NewsCatcherApiClient
+from django.db.models import Q
 
 newscatcherapi = NewsCatcherApiClient(x_api_key='g8EYZLLr3R6q7sBhuK6LWPDlPVV3T86WsZAo0v2NYt8')
 
@@ -49,48 +50,52 @@ def get_news_api(message):
         for data in news_article['articles']:
             articles = {}
             articles["title"] = data["title"]
-            articles["author"] = data["author"]
+            articles["content"] = data["summary"]
             articles["excerpt"] = data["excerpt"]
-            articles["summary"] = data["summary"]
-            articles["clean_url"] = data["clean_url"]
+            articles["author"] = data["author"]
+            articles["news_site_url"] = data["clean_url"]
+            articles["url"] = data["link"]
+            articles["datestr"] = data["published_date"]
             article_arr.append(articles)
-
+    print(article_arr)
     return article_arr
 
 
 def save_news_to_database(phrase, articles):
     for article in articles:
         news = News()
-        news.phrase = phrase
         news.title = article["title"]
-        news.content = article["summary"]
+        news.content = article["content"]
         news.excerpt = article["excerpt"]
-        news.url = article["clean_url"]
+        news.news_site_url = article["news_site_url"]
         news.author = article["author"]
+        news.url = article["url"]
+        news.datestr = article["datestr"]
         news.save()
 
 def index(request):
     pred = ''
     news = ''
-    phraseform = SavePhrase()
     if request.method == 'POST':
         message = request.POST.get('message')
-        existing = News.objects.filter(phrase=message)
+        print("message1", message)
+        existing = News.objects.filter(
+            Q(title__icontains=message) | 
+            Q(content__icontains=message) | 
+            Q(excerpt__icontains=message))
+        print(existing.count())
         if existing.count() != 0:
             news = existing
+            print("if")
         else:
-            phraseform = SavePhrase(request.POST)
-            if phraseform.is_valid():
-                phraseform.save()
-                message = phraseform.cleaned_data.get("message")
-                news = get_news_api(message)
-                if len(news) != 0:
-                    save_news_to_database(message, news)
-                else: 
-                    pred = fake_news_det(message)
-                    pred = 'Unverified'
-                print(pred)
-                print(news)
-                input("Enter")
+            news = get_news_api(message)
+            if len(news) != 0:
+                save_news_to_database(message, news)
+            else: 
+                pred = fake_news_det(message)
+                pred = 'Unverified'
+            print(pred)
+            print(news)
+            input("Enter")
     context = {'predict': pred, 'news': news}
     return render(request, 'news/index.html', context)

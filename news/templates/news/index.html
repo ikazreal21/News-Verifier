@@ -40,33 +40,35 @@
   <main class="container-fluid px-5">
     <div class="d-flex justify-content-around" style="height: 80vh;">
 
-      <form class="w-50 d-flex align-items-center justify-content-center flex-column">
-
+      <form method="POST" class="w-50 d-flex align-items-center justify-content-center flex-column">
+        {% csrf_token %}
         <div class="mb-4">
-          <textarea class="form-control form-control-lg rounded-0" id="search-text" rows="10"
+          <textarea name="message" class="form-control form-control-lg rounded-0" id="search-text" rows="10"
             placeholder="Enter some keywords..." style="height: 100%; width: 700px;"></textarea>
         </div>
 
 
         <div class="">
-          <button type="button" class="btn btn-primary text-center">
+          <button type="submit" class="btn btn-primary text-center">
             <i class="fal fa-search fa-s" style="margin-right: 5px;"></i> Fact Check</button>
         </div>
 
 
         <div class="mt-5 text-light text-center" style="height: 100px;">
-
-          <!-- <div class="mt-4">
-          <p class="lead">The text is a verified <strong class="text-primary">
-              fact
-            </strong>. On the side, are the latest related websites about it.
-          </p>
-        </div> -->
-
+          {% if predict != 'Unverified' %}
+          <div class="mt-4">
+            <p class="lead">The text is a verified <strong class="text-primary">
+                fact
+              </strong>. On the side, are the latest related websites about it.
+            </p>
+          </div>
+          {% endif %}
           <div class="mt-4">
             <p class="lead text-wrap" style="width: 40rem;">
+              {% if predict == 'Unverified' %}
               Sorry, the text is <strong class="text-primary">
                 unverified news
+              {% endif %}
               </strong>. For more information about this please visit
               <a class="text-light" target="_blank" href="https://www.cnnphilippines.com">CNN</a>, <a class="text-light"
                 target="_blank" href="www.gmanetwork.com/news">GMA
@@ -81,12 +83,14 @@
             </p>
           </div>
 
-          <!-- <div class="mt-4">
-          <p class="lead">
-            Sorry we don't have enough information about this.
-          </p>
-        </div> -->
 
+        {% if predict == 'Unverified' %}
+          <div class="mt-4">
+            <p class="lead">
+              Sorry we don't have enough information about this.
+            </p>
+          </div>
+        {% endif %}
         </div>
 
       </form>
@@ -96,8 +100,21 @@
         <h3 class="h3 text-center">Related Articles</h3>
         <div class="list-group mt-4 rounded-0" style="height: 70vh; overflow-y: auto;">
 
-
+        {% for value in news %}
           <a target="_blank"
+            href="{{value.url}}"
+            class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="d-inline-block text-truncate mt-1" style="max-width: 50rem;">{{value.title}}</h5>
+              <small class="text-secondary">{{value.datestr}}</small>
+            </div>
+            <div class="my-2">
+              <small class="truncate text-secondary">{{value.content}}</small>
+            </div>
+            <small>{{value.news_site_url}}</small>
+          </a>
+          {% endfor %}
+          <!-- <a target="_blank"
             href="https://businessmirror.com.ph/2022/11/30/pbbm-new-technologiesat-irri-to-boost-rice-yield/"
             class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
@@ -142,30 +159,7 @@
               </small>
             </div>
             <small>businessmirror.com.ph</small>
-          </a>
-          <a target="_blank"
-            href="https://businessmirror.com.ph/2022/11/30/pbbm-new-technologiesat-irri-to-boost-rice-yield/"
-            class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="d-inline-block text-truncate mt-1" style="max-width: 50rem;">PBBM: New technologiesat IRRI to
-                boost
-                rice yield</h5>
-              <small class="text-secondary">3 days ago</small>
-            </div>
-            <div class="my-2">
-              <small class="truncate text-secondary">PRESIDENT Ferdinand 'Bongbong' R.
-                Marcos Jr. is now eyeing to use the
-                new technologies from the International Rice Research Institute (IRRI) to boost the country's rice
-                production. Marcos made the remark in a media interview during his visit to the IRRI facility in Los
-                Baños, Laguna, together with other officials of the Department of Agriculture (DA). 'It's up to us now
-                in the Philippine government to make sure those technologies, those products, go down to the
-                grassroots,' Marcos said. New technologies During his tour around the IRRI facility, Marcos was briefed
-                about direct seeding of rice—the process of putting up a rice crop from seeds sown in the field, which
-                is expected to improve crop resilience and reduce labor cost, water use and greenhouse emissions.
-              </small>
-            </div>
-            <small>businessmirror.com.ph</small>
-          </a>
+          </a> -->
 
         </div>
 
