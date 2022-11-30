@@ -102,15 +102,17 @@
         <h3 class="h3 text-center mb-4">Related Articles</h3>
 
         {% if news %}
-        <div class="list-group rounded-0" style="height: 50vh; overflow-y: auto;">
+        <div class="list-group rounded-0" style="height: 53vh; overflow-y: auto;">
           {% for value in news %}
           <a target="_blank" href="{{value.url}}" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="d-inline-block text-truncate mt-1" style="max-width: 50rem;">{{value.title}}</h5>
+              <h6 class="d-inline-block text-truncate mt-1 text-uppercase" style="max-width: 50rem;">{{value.title}}
+              </h6>
               <small class="text-secondary">{{value.datestr}}</small>
             </div>
-            <div class="my-2">
-              <small class="truncate text-secondary">{{value.content}}</small>
+            <div class="my-1">
+              <small class="d-inline-block text-secondary text-truncate"
+                style="max-width: 52rem;">{{value.content}}</small>
             </div>
             <small>{{value.news_site_url}}</small>
           </a>
