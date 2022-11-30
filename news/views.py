@@ -93,7 +93,10 @@ def index(request):
                 save_news_to_database(message, news)
             else: 
                 pred = fake_news_det(message)
-                pred = 'Unverified'
+                if pred[0] == 'FAKE':
+                    pred = 'Unverified'
+                else:
+                    pred = 'Verified'
             print(pred)
             print(news)
             input("Enter")
