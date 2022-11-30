@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split
 
 from newscatcherapi import NewsCatcherApiClient
 from django.db.models import Q
+import datetime
 
 newscatcherapi = NewsCatcherApiClient(
     x_api_key="g8EYZLLr3R6q7sBhuK6LWPDlPVV3T86WsZAo0v2NYt8"
@@ -48,7 +49,7 @@ def get_news_api(message):
     query = f"{message}"
     news_article = newscatcherapi.get_search(
         q=query,
-        lang="en",
+        lang="en,tl",
         countries="PH",
         sources="cnnphilippines.com,philstar.com,manilatimes.net,mb.com.ph,\
         tv5.com.ph,inquirer.net,dzrh.com.ph,abs-cbn.com,gmanetwork.com",
@@ -59,19 +60,27 @@ def get_news_api(message):
     if news_article["page_size"] != 0:
         for data in news_article["articles"]:
             articles = {}
+            dt_string = data["published_date"] 
+            format = "%Y-%m-%d %H:%M:%S"
+            dt_object = datetime.datetime.strptime(dt_string, format)
+            days = str(datetime.datetime.now() - dt_object)
+            if days[1] == ' ':
+                days = days[0]
+            else:
+                days = 1
             articles["title"] = data["title"]
             articles["content"] = data["summary"]
             articles["excerpt"] = data["excerpt"]
             articles["author"] = data["author"]
             articles["news_site_url"] = data["clean_url"]
             articles["url"] = data["link"]
-            articles["datestr"] = data["published_date"]
+            articles["dtstr"] = days
             article_arr.append(articles)
     print(article_arr)
     return article_arr
 
 
-def save_news_to_database(phrase, articles):
+def save_news_to_database(articles):
     for article in articles:
         news = News()
         news.title = article["title"]
@@ -80,7 +89,7 @@ def save_news_to_database(phrase, articles):
         news.news_site_url = article["news_site_url"]
         news.author = article["author"]
         news.url = article["url"]
-        news.datestr = article["datestr"]
+        news.dtstr = article["dtstr"]
         news.save()
 
 
@@ -100,19 +109,18 @@ def index(request):
             news = existing
             print("if")
         else:
-            pred = fake_news_det(message)
-            print("FIRST_PRED=", pred)
-            if pred[0] == "FAKE":
-                pred = "Unverified"
-            else:
-                pred = "Verified"
-
-            if pred == "Verified":
-                news = get_news_api(message)
-                if len(news) != 0:
-                    save_news_to_database(message, news)
-
-    context = {"predict": pred, "news": news}
-    print("PREDICTION=", context)
-    return render(request, "news/index.html", context)
+            news = get_news_api(message)
+            if len(news) != 0:
+                save_news_to_database(news)
+            else: 
+                pred = fake_news_det(message)
+                if pred[0] == 'FAKE':
+                    pred = 'Unverified'
+                else:
+                    pred = 'Verified'
+            print(pred)
+            print(news)
+            input("Enter")
+    context = {'predict': pred, 'news': news}
+    return render(request, 'news/index.html', context)
 

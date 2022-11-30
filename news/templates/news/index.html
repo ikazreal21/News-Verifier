@@ -108,7 +108,13 @@
             <div class="d-flex w-100 justify-content-between">
               <h6 class="d-inline-block text-truncate mt-1 text-uppercase" style="max-width: 50rem;">{{value.title}}
               </h6>
-              <small class="text-secondary">{{value.datestr}}</small>
+              <small class="text-secondary">
+                {% if value.dtstr == '1' %}
+                {{value.dtstr}} Day Ago
+                {% else %}
+                {{value.dtstr}} Days Ago
+                {% endif %}
+              </small>
             </div>
             <div class="my-1">
               <small class="d-inline-block text-secondary text-truncate"
