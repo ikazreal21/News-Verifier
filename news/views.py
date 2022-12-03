@@ -93,6 +93,7 @@ def index(request):
     except:
         pred = "Error"
 
+    print("NEWS=", news)
     context = {
         "predict": "Verified"
         if news
@@ -102,7 +103,7 @@ def index(request):
         "news": [
             {
                 **(d.__dict__ if not isinstance(d, dict) else d),
-                "dtstr": get_date_difference(getattr(d, "dtstr"))
+                "dtstr": get_date_difference(d.get("dtstr"))
                 if isinstance(d, dict)
                 else "",
             }
@@ -111,5 +112,5 @@ def index(request):
         ],
         "search_term": message,
     }
-    print("CONTEXT=", context)
+    # print("CONTEXT=", context)
     return render(request, "news/index.html", context)
