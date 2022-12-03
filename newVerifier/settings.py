@@ -103,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 CRONJOBS = [
-    ('*/2 * * * *', 'news.cron.check_expired_data')
+    ('2 * * * *', 'news.cron.check_expired_data')
 ]
 
 # Internationalization
