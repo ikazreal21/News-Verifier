@@ -38,13 +38,13 @@
   </nav>
 
   <main class="container-fluid px-5">
-    <div class="d-flex justify-content-around" style="height: 80vh; padding-top:5.5rem;">
+    <div class="d-lg-flex justify-content-around" style="min-height: 80vh; padding-top:5.5rem;">
 
-      <form method="POST" class="w-150 d-flex flex-column">
+      <form method="POST" class="d-flex flex-column">
         {% csrf_token %}
 
         <h3 class="h3 text-center mb-4 text-light">Fact Verifier</h3>
-        <div class="mb-4">
+        <div class="mb-4 d-flex justify-content-center align-items-center">
           <textarea name="message" class="form-control form-control-lg rounded-0" id="search-text" rows="10"
             placeholder="Enter some keywords..." style="height: 100%; width: 700px;">{{search_term}}</textarea>
         </div>
@@ -97,7 +97,7 @@
 
       </form>
 
-      <section class="text-light w-50 d-flex flex-column">
+      <section class="text-light w-sm-100  w-md-50 d-flex flex-column">
 
         <h3 class="h3 text-center mb-4">Related Articles</h3>
 
@@ -106,21 +106,17 @@
           {% for value in news %}
           <a target="_blank" href="{{value.url}}" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-              <h6 class="d-inline-block text-truncate mt-1 text-uppercase" style="max-width: 50rem;">{{value.title}}
+              <h6 class="d-inline-block text-truncate mt-1 text-uppercase" style="max-width: 40vw;">{{value.title}}
               </h6>
               <small class="text-secondary">
-                {% if value.dtstr == '1' %}
-                {{value.dtstr}} Day Ago
-                {% else %}
-                {{value.dtstr}} Days Ago
-                {% endif %}
+                {{value.dtstr}}
               </small>
             </div>
             <div class="my-1">
               <small class="d-inline-block text-secondary text-truncate"
-                style="max-width: 52rem;">{{value.content}}</small>
+                style="max-width: 45vw;">{{value.content}}</small>
             </div>
-            <small>{{value.news_site_url}}</small>
+            <small class="text-primary">{{value.news_site_url}}</small>
           </a>
           {% endfor %}
 
@@ -135,7 +131,6 @@
         {% endif %}
 
       </section>
-
 
     </div>
   </main>

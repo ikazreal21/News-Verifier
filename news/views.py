@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .utils import get_date_difference
 
 from .models import *
 from .forms import *
@@ -60,21 +61,13 @@ def get_news_api(message):
     if news_article["page_size"] != 0:
         for data in news_article["articles"]:
             articles = {}
-            dt_string = data["published_date"] 
-            format = "%Y-%m-%d %H:%M:%S"
-            dt_object = datetime.datetime.strptime(dt_string, format)
-            days = str(datetime.datetime.now() - dt_object)
-            if days[1] == ' ':
-                days = days[0]
-            else:
-                days = 1
             articles["title"] = data["title"]
             articles["content"] = data["summary"]
             articles["excerpt"] = data["excerpt"]
             articles["author"] = data["author"]
             articles["news_site_url"] = data["clean_url"]
             articles["url"] = data["link"]
-            articles["dtstr"] = days
+            articles["dtstr"] = data["published_date"]
             article_arr.append(articles)
     print(article_arr)
     return article_arr
@@ -94,8 +87,9 @@ def save_news_to_database(articles):
 
 
 def index(request):
-    pred = "Error"
+    pred = ""
     news = ""
+    message = ""
     if request.method == "POST":
         message = request.POST.get("message")
         print("message1", message)
@@ -112,14 +106,23 @@ def index(request):
             news = get_news_api(message)
             if len(news) != 0:
                 save_news_to_database(news)
-            else: 
+            else:
                 pred = fake_news_det(message)
-                if pred[0] == 'FAKE':
-                    pred = 'Unverified'
+                if pred[0] == "FAKE":
+                    pred = "Unverified"
+                elif pred[0] == "REAL":
+                    pred = "Verified"
                 else:
-                    pred = 'Verified'
-            print(pred)
-            print(news)
-            input("Enter")
-    context = {'predict': pred, 'news': news}
-    return render(request, 'news/index.html', context)
+                    pred = "Error"
+
+            print("PREDICTION=", pred)
+    print("NEWS=", news)
+    context = {
+        "predict": pred,
+        "news": [
+            {**d.__dict__, "dtstr": get_date_difference(getattr(d, "dtstr"))}
+            for d in news
+        ],
+        "search_term": message,
+    }
+    return render(request, "news/index.html", context)
