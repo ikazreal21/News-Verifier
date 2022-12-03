@@ -78,9 +78,9 @@ def index(request):
             message = request.POST.get("message")
             print("message1", message)
             existing = News.objects.filter(
-                Q(title__overlap=message)
-                | Q(content__overlap=message)
-                | Q(excerpt__overlap=message)
+                Q(title__icontains=message)
+                | Q(content__icontains=message)
+                | Q(excerpt__icontains=message)
             )
             print(existing.count())
             if existing.count() != 0:
