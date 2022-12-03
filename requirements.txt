@@ -23,7 +23,6 @@ click==8.0.3
 cloudinary==1.26.0
 colorama==0.4.4
 constantly==15.1.0
-daphne==3.0.2
 dateparser==1.1.4
 debugpy==1.6.4
 decorator==5.1.1
@@ -112,4 +111,3 @@ webencodings==0.5.1
 websocket-client==1.4.2
 whitenoise==6.0.0
 wrapt==1.12.1
-zope.interface==5.4.0
