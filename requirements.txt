@@ -1,5 +1,4 @@
 APScheduler
-backports.zoneinfo
 django-apscheduler
 anyio==3.6.2
 appdirs==1.4.4

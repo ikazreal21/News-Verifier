@@ -27,8 +27,10 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
+DEBUG = os.environ.get('DEBUG',default=True,cast=bool)
 
 # Application definition
 
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -83,6 +86,13 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config('postgres://news_b25k_user:cl6IFYTX5oSZseHIX9ae27GmQmPLt8cv@dpg- \
+    ce5mccla4991uesu0hqg-a/news_b25k',conn_max_age=600)}
+
 
 
 # Password validation
@@ -130,6 +140,16 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_URL = "/static/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+# Following settings only make sense in production and may break development environments.
+if not DEBUG:    # Tell Django to copy statics to the `static files` directory
+    # in your application directory on Render.
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    # Turn on the WhiteNoise storage backend that takes care of compressing static files
+    # and creating unique names for each version so they can safely be cached forever.
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
