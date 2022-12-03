@@ -29,8 +29,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
-DEBUG = os.environ.get('DEBUG',default=True,cast=bool)
 
 # Application definition
 
