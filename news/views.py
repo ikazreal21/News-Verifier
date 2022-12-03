@@ -95,7 +95,9 @@ def index(request):
                 "dtstr": get_date_difference(getattr(d, "dtstr")),
             }
             for d in news
+            if d
         ],
         "search_term": message,
     }
+    print("CONTEXT=", context)
     return render(request, "news/index.html", context)
