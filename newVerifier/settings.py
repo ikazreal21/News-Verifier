@@ -31,13 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'news'
+    'news',
 ]
 
 MIDDLEWARE = [
@@ -100,6 +101,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+CRONJOBS = [
+    ('*/2 * * * *', 'news.cron.check_expired_data')
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
