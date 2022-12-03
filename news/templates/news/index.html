@@ -37,10 +37,10 @@
     </div>
   </nav>
 
-  <main class="container-fluid px-5">
-    <div class="row" style="min-height: 80vh; padding-top:5.5rem;">
+  <main class="container-fluid px-5 mb-5">
+    <div class="row" style="min-height: 85vh; padding:5.5rem 0;">
 
-      <form method="POST" class="col d-flex flex-column align-items-center mb-5">
+      <form method="POST" class="col d-flex flex-column align-items-center mb-5 h-100">
         {% csrf_token %}
 
         <h3 class="h3 text-center mb-4 text-light">Fact Verifier</h3>
@@ -141,7 +141,7 @@
     </div>
   </main>
 
-  <footer class="footer bg-secondary fixed-bottom">
+  <footer class="footer bg-secondary position-absolute w-100" style="bottom: 0;">
     <div class="d-flex justify-content-center align-items-center mx-auto">
       <p class="text-center my-auto py-3 text-light">
         Copyright © 2022 Dalisay
