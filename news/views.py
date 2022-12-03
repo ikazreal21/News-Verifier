@@ -83,7 +83,11 @@ def index(request):
         pred = "Error"
 
     context = {
-        "predict": "Verified" if news else "Unverified" if not news else pred,
+        "predict": "Verified"
+        if news
+        else "Unverified"
+        if not news and message
+        else pred,
         "news": [
             {
                 **(d.__dict__ if not isinstance(d, dict) else d),
