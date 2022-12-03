@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 </head>
 
-<body class=" bg-dark">
+<body class="bg-dark p-0 position-relative" style="min-height: 100vh;">
 
   <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
@@ -37,16 +37,16 @@
     </div>
   </nav>
 
-  <main class="container-fluid px-5">
-    <div class="d-flex justify-content-around" style="height: 80vh; padding-top:4rem;">
+  <main class="container-fluid px-5 mb-5">
+    <div class="row" style="padding-top:4rem;">
 
-      <form method="POST" class="w-150 d-flex flex-column">
+      <form method="POST" class="col d-flex flex-column align-items-center mb-5">
         {% csrf_token %}
 
         <h3 class="h3 text-center mb-4 text-light">Fact Verifier</h3>
-        <div class="mb-4">
-          <textarea name="message" class="form-control form-control-lg rounded-0" id="search-text" rows="10"
-            placeholder="Enter some keywords..." style="height: 100%; width: 700px;"></textarea>
+        <div class="mb-4 d-flex justify-content-center align-items-center">
+          <textarea name="message" class="form-control form-control-lg rounded-0" id="search-text" rows="9"
+            placeholder="Enter some keywords..." style="height: 100%; width: 700px;">{{search_term}}</textarea>
         </div>
 
 
@@ -97,7 +97,7 @@
 
       </form>
 
-      <section class="text-light w-50 d-flex flex-column">
+      <section class="col text-light d-flex flex-column">
 
         <h3 class="h3 text-center mb-4">Related Articles</h3>
 
@@ -106,15 +106,23 @@
           {% for value in news %}
           <a target="_blank" href="{{value.url}}" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-              <h6 class="d-inline-block text-truncate mt-1 text-uppercase" style="max-width: 50rem;">{{value.title}}
+              <h6 class="d-inline-block text-truncate mt-1 text-uppercase" style="max-width: 35vw;">{{value.title}}
               </h6>
-              <small class="text-secondary">{{value.datestr}}</small>
+              <small class="text-secondary">
+                {{value.dtstr}}
+              </small>
             </div>
-            <div class="my-1">
-              <small class="d-inline-block text-secondary text-truncate"
-                style="max-width: 52rem;">{{value.content}}</small>
+            <div>
+              <small class="d-inline-block text-secondary text-truncate" style="max-width: 45vw;">
+                {% if value.content%}
+                {{value.content}}
+                {%endif%}
+                {% if not value.content%}
+                No available summary.
+                {%endif%}
+              </small>
             </div>
-            <small>{{value.news_site_url}}</small>
+            <small class="text-primary">{{value.news_site_url}}</small>
           </a>
           {% endfor %}
 
@@ -130,11 +138,10 @@
 
       </section>
 
-
     </div>
   </main>
 
-  <footer class="footer bg-secondary fixed-bottom">
+  <footer class="footer bg-secondary mt-auto position-absolute w-100" style="bottom:0;">
     <div class="d-flex justify-content-center align-items-center mx-auto">
       <p class="text-center my-auto py-3 text-light">
         Copyright © 2022 Dalisay

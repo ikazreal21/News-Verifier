@@ -1,2 +1,2 @@
 # News-Verifier
-News Verifier Using ULMfit and News API
+News Verifier Using News API
