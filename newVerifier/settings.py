@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'news',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -101,10 +101,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"  # Default
 
-CRONJOBS = [
-    ('2 * * * *', 'news.cron.check_expired_data')
-]
+SCHEDULER_DEFAULT = True
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

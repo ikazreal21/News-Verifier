@@ -18,6 +18,12 @@ newscatcherapi = NewsCatcherApiClient(
 )
 
 
+from datetime import datetime, timedelta
+
+def check_expired_data():
+    News.objects.filter(posting_date__lte=datetime.now()-timedelta(minutes=1)).delete()
+    print("deleted")
+
 def get_news_api(message):
 
     query = f"{message}"

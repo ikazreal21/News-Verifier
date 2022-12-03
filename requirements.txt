@@ -1,3 +1,6 @@
+APScheduler
+backports.zoneinfo
+django-apscheduler
 anyio==3.6.2
 appdirs==1.4.4
 argon2-cffi==21.3.0
