@@ -20,9 +20,13 @@ newscatcherapi = NewsCatcherApiClient(
 
 from datetime import datetime, timedelta
 
+
 def check_expired_data():
-    News.objects.filter(posting_date__lte=datetime.now()-timedelta(minutes=1)).delete()
+    News.objects.filter(
+        posting_date__lte=datetime.now() - timedelta(minutes=1)
+    ).delete()
     print("deleted")
+
 
 def get_news_api(message):
 
@@ -98,7 +102,9 @@ def index(request):
         "news": [
             {
                 **(d.__dict__ if not isinstance(d, dict) else d),
-                "dtstr": get_date_difference(getattr(d, "dtstr")),
+                "dtstr": get_date_difference(getattr(d, "dtstr"))
+                if isinstance(d, dict)
+                else "",
             }
             for d in news
             if d
