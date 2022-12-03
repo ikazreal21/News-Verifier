@@ -40,7 +40,7 @@
   <main class="container-fluid px-5">
     <div class="row" style="min-height: 80vh; padding-top:5.5rem;">
 
-      <form method="POST" class="col d-flex flex-column">
+      <form method="POST" class="col d-flex flex-column align-items-center mb-5">
         {% csrf_token %}
 
         <h3 class="h3 text-center mb-4 text-light">Fact Verifier</h3>
@@ -106,13 +106,13 @@
           {% for value in news %}
           <a target="_blank" href="{{value.url}}" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-              <h6 class="d-inline-block text-truncate mt-1 text-uppercase" style="max-width: 40vw;">{{value.title}}
+              <h6 class="d-inline-block text-truncate mt-1 text-uppercase" style="max-width: 35vw;">{{value.title}}
               </h6>
               <small class="text-secondary">
                 {{value.dtstr}}
               </small>
             </div>
-            <div class="my-1">
+            <div>
               <small class="d-inline-block text-secondary text-truncate" style="max-width: 45vw;">
                 {% if value.content%}
                 {{value.content}}

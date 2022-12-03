@@ -16,6 +16,7 @@ newscatcherapi = NewsCatcherApiClient(
     x_api_key="g8EYZLLr3R6q7sBhuK6LWPDlPVV3T86WsZAo0v2NYt8"
 )
 
+
 def get_news_api(message):
 
     query = f"{message}"
@@ -61,31 +62,34 @@ def index(request):
     pred = ""
     news = ""
     message = ""
-    if request.method == "POST":
-        message = request.POST.get("message")
-        print("message1", message)
-        existing = News.objects.filter(
-            Q(title__icontains=message)
-            | Q(content__icontains=message)
-            | Q(excerpt__icontains=message)
-        )
-        print(existing.count())
-        if existing.count() != 0:
-            news = existing
-            print("if")
-        else:
-            news = get_news_api(message)
-            if len(news) != 0:
-                save_news_to_database(news)
+    try:
+        if request.method == "POST":
+            message = request.POST.get("message")
+            print("message1", message)
+            existing = News.objects.filter(
+                Q(title__icontains=message)
+                | Q(content__icontains=message)
+                | Q(excerpt__icontains=message)
+            )
+            print(existing.count())
+            if existing.count() != 0:
+                news = existing
+                print("if")
+            else:
+                news = get_news_api(message)
+                if len(news) != 0:
+                    save_news_to_database(news)
+    except:
+        pred = "Error"
+
     context = {
-        "predict": pred,
+        "predict": "Verified" if news else "Unverified" if not news else pred,
         "news": [
             {
                 **(d.__dict__ if not isinstance(d, dict) else d),
                 "dtstr": get_date_difference(getattr(d, "dtstr")),
             }
             for d in news
-            if d
         ],
         "search_term": message,
     }
