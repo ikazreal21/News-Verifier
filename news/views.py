@@ -120,8 +120,12 @@ def index(request):
     context = {
         "predict": pred,
         "news": [
-            {**d.__dict__, "dtstr": get_date_difference(getattr(d, "dtstr"))}
+            {
+                **(d.__dict__ if not isinstance(d, dict) else d),
+                "dtstr": get_date_difference(getattr(d, "dtstr")),
+            }
             for d in news
+            if d
         ],
         "search_term": message,
     }
