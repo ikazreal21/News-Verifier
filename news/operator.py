@@ -8,7 +8,7 @@ def start():
     scheduler.add_jobstore(DjangoJobStore(), 'djangojobstore')
     register_events(scheduler)
 
-    @scheduler.scheduled_job('interval', minutes=1, name='auto_delete')
+    @scheduler.scheduled_job('interval', days=30, name='auto_delete')
     def auto_delete():
         check_expired_data()
 
