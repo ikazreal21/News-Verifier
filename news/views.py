@@ -36,7 +36,7 @@ def get_news_api(message):
         lang="en,tl",
         countries="PH",
         sources="cnnphilippines.com,philstar.com,manilatimes.net,mb.com.ph,\
-        tv5.com.ph,inquirer.net,dzrh.com.ph,abs-cbn.com,gmanetwork.com",
+        tv5.com.ph,newsinfo.inquirer.net,dzrh.com.ph,abs-cbn.com,gmanetwork.com",
         page_size=50,
     )
 
