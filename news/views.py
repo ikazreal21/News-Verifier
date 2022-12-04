@@ -15,8 +15,8 @@ import datetime
 newscatcherapi = NewsCatcherApiClient(
     x_api_key="_fAzEqugadhAfLLIzLtNsXz9-HfVw5HFIUUEu1Ao3ck"
     # x_api_key="g8EYZLLr3R6q7sBhuK6LWPDlPVV3T86WsZAo0v2NYt8"
+    # x_api_key="kpZ-UzQFGb-aO0mkxSgmlkFV6OXR8TDA6_7417yBcRc"
 )
-
 
 from datetime import datetime, timedelta
 
