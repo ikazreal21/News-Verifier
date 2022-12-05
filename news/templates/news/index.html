@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 </head>
 
-<body class="bg-dark p-0 position-relative" style="min-height: 100vh;">
+<body class="bg-dark p-0 position-relative overflow-auto" style="min-height: 100vh;">
 
   <nav class="navbar navbar-dark bg-secondary bg-opacity-10">
     <div class="container-fluid">
@@ -77,8 +77,9 @@
                 Bulletin</a>, <a class="text-primary" target="_blank" href="https://www.manilatimes.net/">Manila
                 Times</a>, <a class="text-primary" target="_blank" href="https://news.tv5.com.ph/">TV5</a>, <a
                 class="text-primary" target="_blank" href="https://www.dzrh.com.ph/">DZRH</a>, and <a class="text-primary"
-                target="_blank" href="https://news.abs-cbn.com/">ABS-CBN</a> if you are looking
-              for trusted websites.
+                target="_blank" href="https://news.abs-cbn.com/">ABS-CBN</a> which are the 
+                most trust websites according to <a class="text-info"
+                target="_blank" href="https://www.publicusasia.com/es-pq3-2022/">Publicus Asia Inc. 2022.</a>
             </p>
             {% endif %}
           </div>
@@ -100,7 +101,7 @@
         <h3 class="h3 text-center mb-4">Related Articles</h3>
 
         {% if news %}
-        <div class="list-group rounded-0 " style="height: 53vh; overflow-y: auto;">
+        <div class="list-group rounded overflow-auto" style="height: 53vh; overflow-y: auto;">
           {% for value in news %}
           <a target="_blank" href="{{value.url}}" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
@@ -139,7 +140,7 @@
     </div>
   </main>
 
-  <footer class="footer bg-secondary bg-opacity-10 mt-auto position-absolute w-100" style="bottom:0;">
+  <footer class="bg-info text-center text-lg-start fixed-bottom bg-dark mt-auto" style="bottom:0;">
     <div class="d-flex justify-content-center align-items-center mx-auto">
       <p class="text-center my-auto py-3 text-light">
         Copyright © 2022 Dalisay
