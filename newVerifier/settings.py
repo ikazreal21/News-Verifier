@@ -25,7 +25,7 @@ SECRET_KEY = (
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -85,9 +85,9 @@ DATABASES = {
     }
 }
 
-# import dj_database_url
+import dj_database_url
 
-# DATABASES['default'] = dj_database_url.parse('postgres://news_b25k_user:cl6IFYTX5oSZseHIX9ae27GmQmPLt8cv@dpg-ce5mccla4991uesu0hqg-a.oregon-postgres.render.com/news_b25k', conn_max_age=600)
+DATABASES['default'] = dj_database_url.parse('postgres://news_b25k_user:cl6IFYTX5oSZseHIX9ae27GmQmPLt8cv@dpg-ce5mccla4991uesu0hqg-a.oregon-postgres.render.com/news_b25k', conn_max_age=600)
 
 
 # Password validation
