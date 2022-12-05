@@ -86,7 +86,6 @@ pytz-deprecation-shim==0.1.0.post0
 pyzmq==24.0.1
 regex==2021.11.10
 requests==2.27.1
-scipy==1.9.3
 Send2Trash==1.8.0
 service-identity==21.1.0
 six==1.15.0
