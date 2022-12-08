@@ -13,21 +13,17 @@ from django.db.models import Q
 import datetime
 
 newscatcherapi = NewsCatcherApiClient(
-    # x_api_key="_fAzEqugadhAfLLIzLtNsXz9-HfVw5HFIUUEu1Ao3ck"
-    # x_api_key="g8EYZLLr3R6q7sBhuK6LWPDlPVV3T86WsZAo0v2NYt8"
-    # x_api_key="kpZ-UzQFGb-aO0mkxSgmlkFV6OXR8TDA6_7417yBcRc"
-    # x_api_key="Yfh5izc6aVcLOYpWoJxxL0EmtijuIUpdiJJL-ugVlKc"
     x_api_key="bhDAHzDVvHS2YquADh1A4tZAN8ajMCSSmEPqaUbe-RY"
 )
 
 from datetime import datetime, timedelta
 
 
-def check_expired_data():
-    News.objects.filter(
-        posting_date__lte=datetime.now() - timedelta(minutes=1)
-    ).delete()
-    print("deleted")
+# def check_expired_data():
+#     News.objects.filter(
+#         posting_date__lte=datetime.now() - timedelta(minutes=1)
+#     ).delete()
+#     print("deleted")
 
 
 def get_news_api(message):
@@ -35,6 +31,7 @@ def get_news_api(message):
     query = f"{message}"
     news_article = newscatcherapi.get_search(
         q=query,
+        search_in="title_summary",
         lang="en,tl",
         countries="PH",
         sources="cnnphilippines.com,philstar.com,manilatimes.net,mb.com.ph,tv5.com.ph,inquirer.net,dzrh.com.ph,abs-cbn.com,gmanetwork.com",
