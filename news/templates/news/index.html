@@ -41,7 +41,7 @@
       <form method="POST" class="col d-flex flex-column align-items-center mb-5">
         {% csrf_token %}
 
-        <h3 class="h3 text-center mb-4 text-light">Fact Verifier</h3>
+        <h3 class="h3 text-center mb-4 text-light">News Verifier</h3>
         <div class="mb-4 d-flex justify-content-center align-items-center">
           <textarea name="message" class="form-control form-control-lg rounded" id="search-text" rows="9"
             placeholder="Enter some keywords..." style="height: 100%; width: 800px; resize: none;">{{search_term}}</textarea>
@@ -57,9 +57,8 @@
         <div class="mt-3 text-light text-center" style="height: 100px;">
           {% if predict == 'Verified' %}
           <div class="mt-4">
-            <p class="lead text-wrap" style="width: 40rem;">The text is <strong class="text-primary">
-                verified
-              </strong>. Here are the latest related articles about it.
+            <p class="lead text-wrap" style="width: 40rem;">Here are the latest <strong class="text-primary">
+              verified</strong> related articles about it.
             </p>
           </div>
           {% endif %}
@@ -67,7 +66,7 @@
             <p class="lead text-wrap" style="width: 40rem;">
               {% if predict == 'Unverified' %}
               Sorry, the text is <strong class="text-danger">
-                not verified</strong>. Please check the spelling or you may want to visit
+                not verified</strong> according to these trusted Philippine news outlets
               <a class="text-primary" target="_blank" href="https://www.cnnphilippines.com">CNN</a>, <a class="text-primary"
                 target="_blank" href="https://www.gmanetwork.com/news/">GMA
                 7</a>,

@@ -17,7 +17,7 @@ newscatcherapi = NewsCatcherApiClient(
     # x_api_key="g8EYZLLr3R6q7sBhuK6LWPDlPVV3T86WsZAo0v2NYt8"
     # x_api_key="kpZ-UzQFGb-aO0mkxSgmlkFV6OXR8TDA6_7417yBcRc"
     # x_api_key="Yfh5izc6aVcLOYpWoJxxL0EmtijuIUpdiJJL-ugVlKc"
-    x_api_key="PSZ_IZmh2EUVcuXkHKG_XPYP2HO0Tcv0vXSXunOALuQ"
+    x_api_key="bhDAHzDVvHS2YquADh1A4tZAN8ajMCSSmEPqaUbe-RY"
 )
 
 from datetime import datetime, timedelta
@@ -37,8 +37,7 @@ def get_news_api(message):
         q=query,
         lang="en,tl",
         countries="PH",
-        sources="cnnphilippines.com,philstar.com,manilatimes.net,mb.com.ph,\
-        tv5.com.ph,inquirer.net,dzrh.com.ph,abs-cbn.com,gmanetwork.com",
+        sources="cnnphilippines.com,philstar.com,manilatimes.net,mb.com.ph,tv5.com.ph,inquirer.net,dzrh.com.ph,abs-cbn.com,gmanetwork.com",
         page_size=50,
     )
 
