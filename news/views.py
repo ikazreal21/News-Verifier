@@ -13,7 +13,9 @@ from django.db.models import Q
 import datetime
 
 newscatcherapi = NewsCatcherApiClient(
-    x_api_key="bhDAHzDVvHS2YquADh1A4tZAN8ajMCSSmEPqaUbe-RY"
+    # x_api_key="bhDAHzDVvHS2YquADh1A4tZAN8ajMCSSmEPqaUbe-RY"
+    x_api_key="gtf2nNX5XIU5n_SW3TLgZ6gODv6MDUYXM_e9KYJgtv4"
+    # x_api_key="1JuDVL2WGmKMlf6eClndPIj1h6dXIDkT0o6XYfMTZxY"
 )
 
 from datetime import datetime, timedelta
