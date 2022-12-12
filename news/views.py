@@ -13,8 +13,10 @@ from django.db.models import Q
 import datetime
 
 newscatcherapi = NewsCatcherApiClient(
-    # x_api_key="bhDAHzDVvHS2YquADh1A4tZAN8ajMCSSmEPqaUbe-RY"
-    x_api_key="gtf2nNX5XIU5n_SW3TLgZ6gODv6MDUYXM_e9KYJgtv4"
+    x_api_key="L2QU2I1Nm5xpHRIjAccgbfSMR_l6VUrxhiVI1Av8zMk"
+    # this is for defense day (researcher's side)
+    # x_api_key="gtf2nNX5XIU5n_SW3TLgZ6gODv6MDUYXM_e9KYJgtv4"
+    # this is for defense day (panel side)
     # x_api_key="1JuDVL2WGmKMlf6eClndPIj1h6dXIDkT0o6XYfMTZxY"
 )
 
@@ -33,10 +35,9 @@ def get_news_api(message):
     query = f"{message}"
     news_article = newscatcherapi.get_search(
         q=query,
-        search_in="title_summary",
         lang="en,tl",
         countries="PH",
-        sources="cnnphilippines.com,philstar.com,manilatimes.net,mb.com.ph,tv5.com.ph,inquirer.net,dzrh.com.ph,abs-cbn.com,gmanetwork.com",
+        sources="cnnphilippines.com,philstar.com,manilatimes.net,mb.com.ph,news.tv5.com.ph,inquirer.net,dzrh.com.ph,abs-cbn.com,gmanetwork.com,bomboradyo.com",
         page_size=50,
     )
 
