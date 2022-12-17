@@ -34,7 +34,7 @@ def get_news_api(message):
 
     query = f"{message}"
     news_article = newscatcherapi.get_search(
-        q=query,
+        q=f'"{query}"',
         lang="en,tl",
         countries="PH",
         sources="cnnphilippines.com,philstar.com,manilatimes.net,mb.com.ph,\
@@ -87,22 +87,17 @@ def index(request):
             print(existing.count())
             if existing.count() != 0:
                 news = existing
-                print("if")
+                print("CACHE HIT")
             else:
                 news = get_news_api(message)
+                print("CACHE MISS")
                 if len(news) != 0:
                     save_news_to_database(news)
     except:
         pred = "Error"
 
-    print("NEWS=", news)
-    context = {
-        "predict": "Verified"
-        if news
-        else "Unverified"
-        if not news and message
-        else pred,
-        "news": [
+    if news:
+        news = [
             {
                 **(d.__dict__ if not isinstance(d, dict) else d),
                 "dtstr": get_date_difference(
@@ -113,8 +108,34 @@ def index(request):
             }
             for d in news
             if d
-        ],
+        ]
+
+    context = {
+        "predict": "Verified"
+        if news
+        else "Unverified"
+        if not news and message
+        else pred,
+        "total_news": len(news),
+        "month_old_news": len(
+            list(
+                filter(
+                    lambda d: "month" in d["dtstr"] or "year" in d["dtstr"],
+                    news,
+                )
+            )
+        ),
+        "news": news,
         "search_term": message,
     }
+
+    print(
+        "NEWS=",
+        len(news),
+        "PRED=",
+        context["predict"],
+        "MONTH_OLD=",
+        context["month_old_news"],
+    )
     # print("CONTEXT=", context)
     return render(request, "news/index.html", context)

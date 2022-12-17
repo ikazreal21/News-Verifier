@@ -29,7 +29,7 @@
     <div class="container-fluid">
       <a class="navbar-brand mx-auto" href="#!">
         <!-- <img src="{% static 'images/favicon-32x32.png' %}" alt="Dalisay logo" width="30" height="50" -->
-          <!-- class="d-inline-block align-text-top"> -->
+        <!-- class="d-inline-block align-text-top"> -->
         <span id="logo-name">DALISAY</span>
       </a>
     </div>
@@ -44,7 +44,8 @@
         <h3 class="h3 text-center mb-4 text-light">News Verifier</h3>
         <div class="mb-4 d-flex justify-content-center align-items-center">
           <textarea name="message" class="form-control form-control-lg rounded" id="search-text" rows="9"
-            placeholder="Enter some keywords..." style="height: 100%; width: 800px; resize: none;">{{search_term}}</textarea>
+            placeholder="Enter some keywords..."
+            style="height: 100%; width: 800px; resize: none;">{{search_term}}</textarea>
         </div>
 
 
@@ -57,18 +58,42 @@
         <div class="mt-3 text-light text-center" style="height: 100px;">
           {% if predict == 'Verified' %}
           <div class="mt-4">
-            <p class="lead text-wrap" style="width: 40rem;">Here are the latest <strong class="text-primary">
-              verified</strong> related articles about it.
+
+            <p class="lead text-wrap" style="width: 40rem;">
+
+              {% if month_old_news %}
+
+              <strong class="text-warning">
+                WARNING:
+              </strong> The text you've been searching has some old news showing a possibility that it is <strong
+                class="text-danger">unverified</strong>; but here are the related articles.
+
+              {% elif total_news >= 3 %}
+
+              There are {{ total_news }} publishers who wrote about this
+              news showing that the text is <strong class="text-primary">
+                verified</strong>. Here
+
+              {% else %}
+              <strong class="text-warning">
+                WARNING:
+              </strong> The publisher count of the text is low, showing that the text may be <strong
+                class="text-danger">unverified</strong>; but here
+              {% endif %} are the related articles.
+
+
             </p>
+
           </div>
           {% endif %}
+
           <div class="mt-3">
             <p class="lead text-wrap" style="width: 40rem;">
               {% if predict == 'Unverified' %}
               Sorry, the text is <strong class="text-danger">
                 not verified</strong> according to these trusted Philippine news outlets
-              <a class="text-primary" target="_blank" href="https://www.cnnphilippines.com">CNN</a>, <a class="text-primary"
-                target="_blank" href="https://www.gmanetwork.com/news/">GMA
+              <a class="text-primary" target="_blank" href="https://www.cnnphilippines.com">CNN</a>, <a
+                class="text-primary" target="_blank" href="https://www.gmanetwork.com/news/">GMA
                 7</a>,
               <a class="text-primary" target="_blank" href="https://www.inquirer.net">Philippine Daily Inquirer</a>,
               <a class="text-primary" target="_blank" href="https://www.bomboradyo.com/">Bombo Radyo</a>,

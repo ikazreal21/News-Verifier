@@ -7,7 +7,7 @@ class News(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     excerpt = models.TextField()
-    url = models.CharField(max_length=255)
+    url = models.CharField(max_length=255, unique=True)
     author = models.CharField(max_length=255)
     news_site_url = models.CharField(max_length=255)
     dtstr = models.CharField(max_length=50, default="None")
