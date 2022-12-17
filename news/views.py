@@ -61,6 +61,17 @@ def get_news_api(message):
     return article_arr
 
 
+def get_daily_news():
+
+    sources = "sunstar.com.ph,inquirer.net,gmanetwork.com,philstar.com,abs-cbn.com,mb.com.ph,manilatimes.net,cnnphilippines.com,tv5.com.ph,pna.gov.ph"
+
+    daily_news = newscatcherapi.get_latest_headlines(
+        lang="en,tl", sources=sources, page_size=12, countries="PH"
+    )
+
+    return daily_news["articles"]
+
+
 def save_news_to_database(articles):
     for article in articles:
         news = News()
