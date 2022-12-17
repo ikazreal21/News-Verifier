@@ -190,16 +190,35 @@ input:focus {
   font-size: 40px;
   letter-spacing: 60px;
 }
-#buttonstyle{
+#buttonstyle {
   font-family: "Poppins";
   font-weight: bold;
-  color:#367cb6;
+  color: #367cb6;
   font-size: larger;
   letter-spacing: 3px;
 }
-h3{
+h3 {
   font-family: "Poppins";
   font-weight: bold;
-  color:#ffffff;
+  color: #ffffff;
   letter-spacing: 3px;
+}
+
+.truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  max-width: 55rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 20%;
+}
+
+footer {
+  position: relative;
+  width: 100%;
+  bottom: 0;
+  color: white;
+  background-color: #202020;
+  font-size: 12px;
 }

@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 </head>
 
-<body class="bg-dark p-0 position-relative overflow-auto" style="min-height: 100vh;">
+<body class="bg-dark p-0 position-relative overflow-auto" style="height:100%;">
 
   <nav class="navbar navbar-dark bg-secondary bg-opacity-10">
     <div class="container-fluid">
@@ -160,9 +160,44 @@
       </section>
 
     </div>
+
+    <hr class="text-secondary">
+    <section class="row px-5 pb-5">
+
+      <h3 class="h3 text-light my-2">Daily News:</h3>
+
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+
+        {% for d in daily_news %}
+        <div class="col">
+          <a href="{{d.link}}" target="_blank" class="text-dark text-decoration-none">
+            <div class="card mb-3">
+
+              <img src="{{d.media}}" class="card-img-top" alt=" " height="250px">
+
+              <div class="card-body">
+                <h5 class="card-title text-truncate">{{d.title}}</h5>
+                <p class="card-text truncate">{{d.summary}}</p>
+                <div class="d-flex align-items-end justify-content-between">
+                  <span class="card-text"><small class="text-primary">{{ d.clean_url }}</small></span>
+                  <span class="card-text"><small class="text-muted">{{ d.dtstr }}</small></span>
+                </div>
+              </div>
+
+            </div>
+          </a>
+
+        </div>
+
+        {% endfor %}
+      </div>
+
+
+    </section>
+
   </main>
 
-  <footer class="bg-info text-center text-lg-start fixed-bottom bg-dark mt-auto" style="bottom:0;">
+  <footer class="footer bg-info text-center text-lg-start bg-dark">
     <div class="d-flex justify-content-center align-items-center mx-auto">
       <p class="text-center my-auto py-3 text-light">
         Copyright © 2022 Dalisay

@@ -7,6 +7,9 @@ from .utils import get_date_difference
 from .models import *
 from .forms import *
 
+# for testing
+from .daily_news import daily_news
+
 
 from newscatcherapi import NewsCatcherApiClient
 from django.db.models import Q
@@ -97,18 +100,7 @@ def index(request):
         pred = "Error"
 
     if news:
-        news = [
-            {
-                **(d.__dict__ if not isinstance(d, dict) else d),
-                "dtstr": get_date_difference(
-                    d.get("dtstr")
-                    if isinstance(d, dict)
-                    else getattr(d, "dtstr")
-                ),
-            }
-            for d in news
-            if d
-        ]
+        news = replace_dtstr(news)
 
     context = {
         "predict": "Verified"
@@ -127,6 +119,7 @@ def index(request):
         ),
         "news": news,
         "search_term": message,
+        "daily_news": replace_dtstr(daily_news),
     }
 
     print(
@@ -139,3 +132,16 @@ def index(request):
     )
     # print("CONTEXT=", context)
     return render(request, "news/index.html", context)
+
+
+def replace_dtstr(news):
+    return [
+        {
+            **(d.__dict__ if not isinstance(d, dict) else d),
+            "dtstr": get_date_difference(
+                d.get("dtstr") if isinstance(d, dict) else getattr(d, "dtstr")
+            ),
+        }
+        for d in news
+        if d
+    ]
