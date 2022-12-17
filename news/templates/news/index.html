@@ -36,9 +36,9 @@
   </nav>
 
   <main class="container-fluid px-5 mb-5">
-    <div class="row" style="padding-top:4rem;">
+    <div class="row mb-5" style="padding-top:4rem;">
 
-      <form method="POST" class="col d-flex flex-column align-items-center mb-5">
+      <form method="POST" class="col d-flex flex-column align-items-center ">
         {% csrf_token %}
 
         <h3 class="h3 text-center mb-4 text-light">News Verifier</h3>
@@ -55,7 +55,7 @@
         </div>
 
 
-        <div class="mt-3 text-light text-center" style="height: 100px;">
+        <div class="mt-3 mb-5 text-light text-center" style="height: 100px;">
           {% if predict == 'Verified' %}
           <div class="mt-4">
 
@@ -118,12 +118,12 @@
 
       </form>
 
-      <section class="col text-light d-flex flex-column align-items-center w-80">
+      <section class="col text-light d-flex flex-column align-items-center w-80  mb-5">
 
         <h3 class="h3 text-center mb-4">Related Articles</h3>
 
         {% if news %}
-        <div class="list-group rounded overflow-auto" style="height: 53vh; overflow-y: auto;">
+        <div class="list-group rounded overflow-auto" style="max-height: 53vh; overflow-y: auto;">
           {% for value in news %}
           <a target="_blank" href="{{value.url}}" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
@@ -166,7 +166,7 @@
 
       <h3 class="h3 text-light my-2">Daily News:</h3>
 
-      <div class="row row-cols-1 row-cols-md-4 g-4">
+      <div class="row row-cols-sm-1 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
 
         {% for d in daily_news %}
         <div class="col">
