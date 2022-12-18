@@ -45,6 +45,8 @@ def arrange_news(news_article, daily_news=0):
             articles["url"] = data["link"]
             if daily_news == 1:
                 articles["media"] = data["media"]
+            else:
+                articles["media"] = None
             articles["dtstr"] = data["published_date"]
             article_arr.append(articles)
     print(article_arr)
@@ -97,17 +99,17 @@ def save_news_to_database(articles):
 
 
 def phrase_conditions(message):
-    message = message.split(" ")
-    if len(message) <= 3 and len(message) > 0:
+    message_arr = message.split(" ")
+    if len(message_arr) <= 3 and len(message_arr) > 0:
         existing = News.objects.filter(
             Q(title__icontains=message)
             | Q(content__icontains=message)
             | Q(excerpt__icontains=message)
             )
         return existing
-    elif len(message) > 3:
+    elif len(message_arr) > 3:
         cache_news = News.objects.none()
-        for i in message:
+        for i in message_arr:
             existing = News.objects.filter(
                 Q(title__icontains=i)
                 | Q(content__icontains=i)
