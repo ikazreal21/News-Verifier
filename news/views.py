@@ -32,7 +32,7 @@ newscatcherapi = NewsCatcherApiClient(
 #     print("deleted")
 
 
-def arrange_news(news_article, daily_news=0):
+def arrange_news(news_article):
     article_arr = []
     if news_article["page_size"] != 0:
         for data in news_article["articles"]:
@@ -43,10 +43,7 @@ def arrange_news(news_article, daily_news=0):
             articles["author"] = data["author"]
             articles["news_site_url"] = data["clean_url"]
             articles["url"] = data["link"]
-            if daily_news == 1:
-                articles["media"] = data["media"]
-            else:
-                articles["media"] = None
+            articles["media"] = data["media"]
             articles["dtstr"] = data["published_date"]
             article_arr.append(articles)
     print(article_arr)
@@ -78,13 +75,13 @@ def get_daily_news():
         daily_news = newscatcherapi.get_latest_headlines(
             lang="en,tl", sources=sources, page_size=12, countries="PH"
         )
-        daily_news = arrange_news(daily_news, 1)
-        save_news_to_database(daily_news)
+        daily_news = arrange_news(daily_news)
+        save_news_to_database(daily_news, 1)
     print("daily news", daily_news)
     return daily_news
 
 
-def save_news_to_database(articles):
+def save_news_to_database(articles , daily_news=0):
     for article in articles:
         news = News()
         news.title = article["title"]
@@ -93,7 +90,8 @@ def save_news_to_database(articles):
         news.news_site_url = article["news_site_url"]
         news.author = article["author"]
         news.url = article["url"]
-        news.media = article["media"]
+        if daily_news == 1:
+            news.media = article["media"]
         news.dtstr = article["dtstr"]
         news.save()
 
@@ -129,7 +127,6 @@ def index(request):
         if request.method == "POST":
             message = request.POST.get("message")
             existing = phrase_conditions(message)
-            print(existing.count())
             if existing.count() != 0:
                 news = existing
                 print("CACHE HIT")
