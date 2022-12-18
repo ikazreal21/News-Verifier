@@ -170,16 +170,16 @@
 
         {% for d in daily_news %}
         <div class="col">
-          <a href="{{d.link}}" target="_blank" class="text-dark text-decoration-none">
+          <a href="{{d.url}}" target="_blank" class="text-dark text-decoration-none">
             <div class="card mb-3">
 
               <img src="{{d.media}}" class="card-img-top" alt=" " height="250px">
 
               <div class="card-body">
                 <h5 class="card-title text-truncate">{{d.title}}</h5>
-                <p class="card-text truncate">{{d.summary}}</p>
+                <p class="card-text truncate">{{d.content}}</p>
                 <div class="d-flex align-items-end justify-content-between">
-                  <span class="card-text"><small class="text-primary">{{ d.clean_url }}</small></span>
+                  <span class="card-text"><small class="text-primary">{{ d.news_site_url }}</small></span>
                   <span class="card-text"><small class="text-muted">{{ d.dtstr }}</small></span>
                 </div>
               </div>

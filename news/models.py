@@ -12,6 +12,7 @@ class News(models.Model):
     news_site_url = models.CharField(max_length=255)
     dtstr = models.CharField(max_length=50, default="None")
     posting_date = models.DateTimeField(auto_now_add=True)
+    media = models.CharField(max_length=255, default="None")
 
     def __str__(self):
         return self.title
