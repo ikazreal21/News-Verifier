@@ -23,7 +23,7 @@ newscatcherapi = NewsCatcherApiClient(
     # x_api_key="1JuDVL2WGmKMlf6eClndPIj1h6dXIDkT0o6XYfMTZxY"
 )
 
-
+sources = "sunstar.com.ph,inquirer.net,gmanetwork.com,philstar.com,abs-cbn.com,mb.com.ph,manilatimes.net,cnnphilippines.com,tv5.com.ph,pna.gov.ph"
 
 # def check_expired_data():
 #     News.objects.filter(
@@ -33,6 +33,7 @@ newscatcherapi = NewsCatcherApiClient(
 
 
 def arrange_news(news_article):
+
     article_arr = []
     if news_article["page_size"] != 0:
         for data in news_article["articles"]:
@@ -49,27 +50,53 @@ def arrange_news(news_article):
     print(article_arr)
     return article_arr
 
-def get_news_api(message):
 
-    query = f"{message}"
+def get_news_api(message):
+    print("GET_NEWS_API=", message)
+
     news_article = newscatcherapi.get_search(
-        q=f'"{query}"',
+        q=f'"{message}"',
         lang="en,tl",
         countries="PH",
-        sources="sunstar.com.ph,inquirer.net,gmanetwork.com,philstar.com,abs-cbn.com,mb.com.ph,manilatimes.net,cnnphilippines.com,tv5.com.ph,pna.gov.ph",
+        sources=sources,
         page_size=50,
     )
-    article_arr = arrange_news(news_article)
-    return article_arr
+
+    filtered_news = news_article.copy()
+    articles = []
+    msg = message.lower()
+
+    if "articles" in news_article:
+        for d in filtered_news.pop("articles"):
+            if (
+                msg in d["title"].lower()
+                or msg in d["excerpt"].lower()
+                or msg in d["summary"].lower()
+            ):
+                articles.append(d)
+
+    filtered_news["articles"] = articles
+
+    print(
+        f"""
+    OG={len(news_article["articles"])}
+    FILTERED={len(filtered_news["articles"])}
+    """
+    )
+
+    print("OGG=", news_article, "FILTERED=", filtered_news)
+
+    return arrange_news(filtered_news)
 
 
 def get_daily_news():
 
-    daily_news = News.objects.filter(dtstr__contains=datetime.date.today().strftime("%Y-%m-%d"))
+    daily_news = News.objects.filter(
+        dtstr__contains=datetime.date.today().strftime("%Y-%m-%d")
+    )
     print("daily news1", daily_news.count())
     if daily_news.count() == 0:
         print("no news")
-        sources = "sunstar.com.ph,inquirer.net,gmanetwork.com,philstar.com,abs-cbn.com,mb.com.ph,manilatimes.net,cnnphilippines.com,tv5.com.ph,pna.gov.ph"
 
         daily_news = newscatcherapi.get_latest_headlines(
             lang="en,tl", sources=sources, page_size=12, countries="PH"
@@ -80,7 +107,7 @@ def get_daily_news():
     return daily_news
 
 
-def save_news_to_database(articles , daily_news=0):
+def save_news_to_database(articles, daily_news=0):
     for article in articles:
         news = News()
         news.title = article["title"]
@@ -102,7 +129,7 @@ def phrase_conditions(message):
             Q(title__icontains=message)
             | Q(content__icontains=message)
             | Q(excerpt__icontains=message)
-            )
+        )
         return existing
     elif len(message_arr) > 3:
         cache_news = News.objects.none()
@@ -111,11 +138,12 @@ def phrase_conditions(message):
                 Q(title__icontains=i)
                 | Q(content__icontains=i)
                 | Q(excerpt__icontains=i)
-                )
+            )
             cache_news = cache_news.union(existing)
         return cache_news
     else:
         return []
+
 
 def index(request):
     pred = ""
@@ -127,14 +155,16 @@ def index(request):
             message = request.POST.get("message")
             existing = phrase_conditions(message)
             if existing.count() != 0:
-                news = existing
                 print("CACHE HIT")
+                news = existing
             else:
-                news = get_news_api(message)
                 print("CACHE MISS")
+                news = get_news_api(message)
+                print("NEWS=", news)
                 if len(news) != 0:
                     save_news_to_database(news)
-    except:
+    except Exception as e:
+        print("ERROR=", e)
         pred = "Error"
 
     if news:
@@ -146,7 +176,7 @@ def index(request):
         else "Unverified"
         if not news and message
         else pred,
-        "total_news": len(news),
+        "total_news": len(set([d["news_site_url"] for d in news])),
         "month_old_news": len(
             list(
                 filter(

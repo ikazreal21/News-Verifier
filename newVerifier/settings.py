@@ -87,7 +87,10 @@ DATABASES = {
 
 import dj_database_url
 
-DATABASES['default'] = dj_database_url.parse('postgres://dalisay_user:lWnfGxRoKt5FZkkhEpjqU25ae2D93Zti@dpg-cefi7v1gp3jk7mhfermg-a.singapore-postgres.render.com/dalisay', conn_max_age=600)
+DATABASES["default"] = dj_database_url.parse(
+    "postgres://dalisay_user:lWnfGxRoKt5FZkkhEpjqU25ae2D93Zti@dpg-cefi7v1gp3jk7mhfermg-a.singapore-postgres.render.com/dalisay",
+    conn_max_age=600,
+)
 
 
 # Password validation
