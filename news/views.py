@@ -18,7 +18,7 @@ import datetime
 newscatcherapi = NewsCatcherApiClient(
     # x_api_key="L2QU2I1Nm5xpHRIjAccgbfSMR_l6VUrxhiVI1Av8zMk"
     # this is for defense day (researcher's side)
-    x_api_key="gtf2nNX5XIU5n_SW3TLgZ6gODv6MDUYXM_e9KYJgtv4"
+    x_api_key="3UVyIlDnQJ2uWr3bPh7XclVt-ba-jICgB8NnVUZ3Hp0"
     # this is for defense day (panel side)
     # x_api_key="1JuDVL2WGmKMlf6eClndPIj1h6dXIDkT0o6XYfMTZxY"
 )
@@ -56,8 +56,7 @@ def get_news_api(message):
         q=f'"{query}"',
         lang="en,tl",
         countries="PH",
-        sources="cnnphilippines.com,philstar.com,manilatimes.net,mb.com.ph,\
-            news.tv5.com.ph,inquirer.net,dzrh.com.ph,abs-cbn.com,gmanetwork.com,bomboradyo.com",
+        sources="sunstar.com.ph,inquirer.net,gmanetwork.com,philstar.com,abs-cbn.com,mb.com.ph,manilatimes.net,cnnphilippines.com,tv5.com.ph,pna.gov.ph",
         page_size=50,
     )
     article_arr = arrange_news(news_article)
