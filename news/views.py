@@ -12,7 +12,7 @@ from .forms import *
 
 from newscatcherapi import NewsCatcherApiClient
 from django.db.models import Q
-import datetime
+from datetime import datetime, timedelta
 
 from nltk.corpus import stopwords
 import nltk
@@ -109,10 +109,9 @@ def get_news_api(message):
 
 
 def get_daily_news():
-
+    time_news = datetime.now() - timedelta(hours=8)
     daily_news = News.objects.filter(
-        dtstr__contains=datetime.date.today().strftime("%Y-%m-%d")
-    )
+        dtstr__contains=time_news.strftime("%Y-%m-%d") )
     print("daily news1", daily_news.count())
     if daily_news.count() == 0:
         print("no news")
@@ -156,11 +155,14 @@ def phrase_conditions(message):
         q_message = message.replace(":", "")
         text_tokens = word_tokenize(q_message)
         tokens_without_sw = [word for word in text_tokens if not word in stopwords.words()]
+        print(tokens_without_sw)
         cache_news = News.objects.none()
-        for i in range (0, 3):
-            existing = News.objects.filter(title__icontains=tokens_without_sw[i])
-            cache_news = cache_news.union(existing)
-            print("cache_news", cache_news)
+        existing = News.objects.filter(
+        Q(title__icontains=tokens_without_sw[0]) 
+        & Q(title__icontains=tokens_without_sw[1]) 
+        & Q(title__icontains=tokens_without_sw[2]))
+        cache_news = cache_news.union(existing)
+        print("cache_news", cache_news)
         return cache_news
     else:
         return []
