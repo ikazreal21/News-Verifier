@@ -157,11 +157,12 @@ def phrase_conditions(message):
         tokens_without_sw = [word for word in text_tokens if not word in stopwords.words()]
         print(tokens_without_sw)
         cache_news = News.objects.none()
-        existing = News.objects.filter(
-        Q(title__icontains=tokens_without_sw[0]) 
-        & Q(title__icontains=tokens_without_sw[1]) 
-        & Q(title__icontains=tokens_without_sw[2]))
-        cache_news = cache_news.union(existing)
+        for i in range (0, len(tokens_without_sw)):
+            existing = News.objects.filter(
+            Q(title__icontains=tokens_without_sw[i])
+            & Q(title__icontains=tokens_without_sw[i-1])
+            & Q(title__icontains=tokens_without_sw[i-2]))
+            cache_news = cache_news.union(existing)
         print("cache_news", cache_news)
         return cache_news
     else:
