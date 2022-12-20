@@ -10,10 +10,19 @@ from .forms import *
 # for testing
 # from .daily_news import daily_news
 
-
 from newscatcherapi import NewsCatcherApiClient
 from django.db.models import Q
 import datetime
+
+from nltk.corpus import stopwords
+import nltk
+from nltk.tokenize import word_tokenize
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('omw-1.4')
+
+
 
 newscatcherapi = NewsCatcherApiClient(
     # Zaki API Key
@@ -144,9 +153,12 @@ def phrase_conditions(message):
         print("existing", existing)
         return existing
     elif len(message_arr) > 3:
+        q_message = message.replace(":", "")
+        text_tokens = word_tokenize(q_message)
+        tokens_without_sw = [word for word in text_tokens if not word in stopwords.words()]
         cache_news = News.objects.none()
         for i in range (0, 3):
-            existing = News.objects.filter(title__icontains=message_arr[i])
+            existing = News.objects.filter(title__icontains=tokens_without_sw[i])
             cache_news = cache_news.union(existing)
             print("cache_news", cache_news)
         return cache_news
