@@ -16,9 +16,11 @@ from django.db.models import Q
 import datetime
 
 newscatcherapi = NewsCatcherApiClient(
+    # Zaki API Key
+    x_api_key="HZDdL8y0QYFdn_B9H1lpvof9doTdDloKLKSe8f2jAGY"
     # x_api_key="L2QU2I1Nm5xpHRIjAccgbfSMR_l6VUrxhiVI1Av8zMk"
     # this is for defense day (researcher's side)
-    x_api_key="3UVyIlDnQJ2uWr3bPh7XclVt-ba-jICgB8NnVUZ3Hp0"
+    # x_api_key="3UVyIlDnQJ2uWr3bPh7XclVt-ba-jICgB8NnVUZ3Hp0"
     # this is for defense day (panel side)
     # x_api_key="1JuDVL2WGmKMlf6eClndPIj1h6dXIDkT0o6XYfMTZxY"
 )
@@ -52,41 +54,49 @@ def arrange_news(news_article):
 
 
 def get_news_api(message):
+    q_message = message.replace(":", "")
     print("GET_NEWS_API=", message)
 
     news_article = newscatcherapi.get_search(
-        q=f'"{message}"',
+        q=q_message,
         lang="en,tl",
         countries="PH",
         sources=sources,
         page_size=50,
     )
+    print("news_article", news_article["page_size"])
+    if news_article["page_size"] != 0:
+        search_news = arrange_news(news_article)
+        save_news_to_database(search_news)
+        existing = phrase_conditions(message)
 
-    filtered_news = news_article.copy()
-    articles = []
-    msg = message.lower()
+    return existing
 
-    if "articles" in news_article:
-        for d in filtered_news.pop("articles"):
-            if (
-                msg in d["title"].lower()
-                or msg in d["excerpt"].lower()
-                or msg in d["summary"].lower()
-            ):
-                articles.append(d)
+    # filtered_news = news_article.copy()
+    # articles = []
+    # msg = message.lower()
 
-    filtered_news["articles"] = articles
+    # if "articles" in news_article:
+    #     for d in filtered_news.pop("articles"):
+    #         if (
+    #             msg in d["title"].lower()
+    #             or msg in d["excerpt"].lower()
+    #             or msg in d["summary"].lower()
+    #         ):
+    #             articles.append(d)
 
-    print(
-        f"""
-    OG={len(news_article["articles"])}
-    FILTERED={len(filtered_news["articles"])}
-    """
-    )
+    # filtered_news["articles"] = articles
 
-    print("OGG=", news_article, "FILTERED=", filtered_news)
+    # print(
+    #     f"""
+    # OG={len(news_article["articles"])}
+    # FILTERED={len(filtered_news["articles"])}
+    # """
+    # )
 
-    return arrange_news(filtered_news)
+    # print("OGG=", news_article, "FILTERED=", filtered_news)
+
+    # return arrange_news(filtered_news)
 
 
 def get_daily_news():
@@ -125,25 +135,23 @@ def save_news_to_database(articles, daily_news=0):
 def phrase_conditions(message):
     message_arr = message.split(" ")
     if len(message_arr) <= 3 and len(message_arr) > 0:
+        print("message_arr", message_arr)
         existing = News.objects.filter(
             Q(title__icontains=message)
             | Q(content__icontains=message)
             | Q(excerpt__icontains=message)
         )
+        print("existing", existing)
         return existing
     elif len(message_arr) > 3:
         cache_news = News.objects.none()
-        for i in message_arr:
-            existing = News.objects.filter(
-                Q(title__icontains=i)
-                | Q(content__icontains=i)
-                | Q(excerpt__icontains=i)
-            )
+        for i in range (0, 3):
+            existing = News.objects.filter(title__icontains=message_arr[i])
             cache_news = cache_news.union(existing)
+            print("cache_news", cache_news)
         return cache_news
     else:
         return []
-
 
 def index(request):
     pred = ""
@@ -153,6 +161,7 @@ def index(request):
     try:
         if request.method == "POST":
             message = request.POST.get("message")
+            print("message",message)
             existing = phrase_conditions(message)
             if existing.count() != 0:
                 print("CACHE HIT")
@@ -161,8 +170,6 @@ def index(request):
                 print("CACHE MISS")
                 news = get_news_api(message)
                 print("NEWS=", news)
-                if len(news) != 0:
-                    save_news_to_database(news)
     except Exception as e:
         print("ERROR=", e)
         pred = "Error"
