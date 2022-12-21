@@ -26,15 +26,15 @@ nltk.download('omw-1.4')
 
 newscatcherapi = NewsCatcherApiClient(
     # Zaki API Key
-    x_api_key="HZDdL8y0QYFdn_B9H1lpvof9doTdDloKLKSe8f2jAGY"
-    # x_api_key="L2QU2I1Nm5xpHRIjAccgbfSMR_l6VUrxhiVI1Av8zMk"
+    # x_api_key="HZDdL8y0QYFdn_B9H1lpvof9doTdDloKLKSe8f2jAGY"
+    x_api_key="cxNOewNpzpKHMHPP7Vbs_aMwANFO1inTKzkgBtfmhBM"
     # this is for defense day (researcher's side)
     # x_api_key="3UVyIlDnQJ2uWr3bPh7XclVt-ba-jICgB8NnVUZ3Hp0"
     # this is for defense day (panel side)
     # x_api_key="1JuDVL2WGmKMlf6eClndPIj1h6dXIDkT0o6XYfMTZxY"
 )
 
-sources = "sunstar.com.ph,inquirer.net,gmanetwork.com,philstar.com,abs-cbn.com,mb.com.ph,manilatimes.net,cnnphilippines.com,tv5.com.ph,pna.gov.ph"
+sources = "inquirer.net,gmanetwork.com,abs-cbn.com,mb.com.ph,cnnphilippines.com"
 
 # def check_expired_data():
 #     News.objects.filter(

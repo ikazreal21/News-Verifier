@@ -65,14 +65,13 @@
 
               <strong class="text-warning">
                 WARNING:
-              </strong> The text you've been searching has some old news showing a possibility that it is <strong
+              </strong> The text you've been searching has some old articles, showing a possibility that it is <strong
                 class="text-danger">unverified</strong>; but here are the related articles.
 
               {% elif total_news >= 3 %}
 
-              There are {{ total_news }} publishers who wrote about this
-              news showing that the text is <strong class="text-primary">
-                verified</strong>. Here
+              There are {{ total_news }} <strong class="text-primary">
+                verified</strong> publishers that wrote about the text. Here
 
               {% else %}
               <strong class="text-warning">
@@ -91,18 +90,14 @@
             <p class="lead text-wrap" style="width: 40rem;">
               {% if predict == 'Unverified' %}
               Sorry, the text is <strong class="text-danger">
-                not verified</strong> according to these trusted Philippine news outlets
+                unverified</strong> according to these trusted Philippine news outlets
               <a class="text-primary" target="_blank" href="https://www.cnnphilippines.com">CNN</a>, <a
-                class="text-primary" target="_blank" href="https://www.gmanetwork.com/news/">GMA
+                class="text-primary" target="_blank" href="https://www.gmanetwork.com">GMA
                 7</a>,
               <a class="text-primary" target="_blank" href="https://www.inquirer.net">Philippine Daily Inquirer</a>,
-              <a class="text-primary" target="_blank" href="https://www.abs-cbn.com">Abs-Cbn</a>,
-              <a class="text-primary" target="_blank" href="https://www.sunstar.com.ph">SunStar</a>,
-              <a class="text-primary" target="_blank" href="https://www.philstar.com/">Philippine Star</a>, <a
-                class="text-primary" target="_blank" href="https://mb.com.ph/">Manila
-                Bulletin</a>, <a class="text-primary" target="_blank" href="https://www.manilatimes.net/">Manila
-                Times</a>, <a class="text-primary" target="_blank" href="https://www.tv5.com.ph/">TV5</a>, and <a
-                class="text-primary" target="_blank" href="https://www.pna.gov.ph">Philippine News Agency</a>.
+              <a class="text-primary" target="_blank" href="https://www.abs-cbn.com">Abs-Cbn</a>, and 
+                <a class="text-primary" target="_blank" href="https://mb.com.ph/">Manila
+                Bulletin</a>.
             </p>
             {% endif %}
           </div>
